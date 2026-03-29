@@ -11,6 +11,16 @@ view: users {
     type: number
     sql: ${TABLE}.age ;;
   }
+
+  dimension: age_buckets {
+    type: tier
+    tiers: [0, 10, 20, 30, 40, 50, 60, 70, 80]
+    style: interval
+    sql: ${age} ;;
+    value_format_name: id
+  }
+
+
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
@@ -33,6 +43,13 @@ view: users {
     type: string
     sql: ${TABLE}.first_name ;;
   }
+
+  dimension: name {
+    label: "Name"
+    description: "Full user name"
+    sql: concat(${first_name}, ' ', ${last_name}) ;;
+  }
+
   dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
