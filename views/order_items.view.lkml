@@ -92,6 +92,7 @@ view: order_items {
     label: "Average Sale Price Value"
     description: "Average Sale Price not considering order status"
     type: average
+    value_format_name: decimal_1
     sql: ${sale_price} ;;
   }
 

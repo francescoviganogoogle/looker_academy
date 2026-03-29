@@ -2,6 +2,9 @@ connection: "looker_academy"
 
 include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
 
+include: "/dashboards/*.dashboard.lookml"
+
+
 explore: order_items {
 
 
