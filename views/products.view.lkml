@@ -2,6 +2,13 @@ view: products {
   sql_table_name: `bigquery-public-data.thelook_ecommerce.products` ;;
   drill_fields: [id]
 
+  filter: category_selector {
+    type: string
+    suggest_dimension: products.category
+    suggest_explore: order_items
+
+  }
+
   dimension: id {
     primary_key: yes
     type: number
@@ -15,6 +22,13 @@ view: products {
     type: string
     sql: ${TABLE}.category ;;
   }
+
+  dimension: category_comparison {
+    type: string
+    sql: case when {% condition category_selector %} ${category} {% endcondition %} then ${category} else 'Other categories' end;;
+
+  }
+
   dimension: cost {
     type: number
     sql: ${TABLE}.cost ;;

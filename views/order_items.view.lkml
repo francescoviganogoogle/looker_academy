@@ -2,6 +2,66 @@ view: order_items {
   sql_table_name: `bigquery-public-data.thelook_ecommerce.order_items` ;;
   drill_fields: [id]
 
+
+  parameter: metric_selector {
+
+    type: string
+    allowed_value: {
+      label: "Count"
+      value: "count"
+    }
+    allowed_value: {
+      label: "Average Sale Price Value"
+      value: "average_sales"
+    }
+    allowed_value: {
+      label: "Total Order Value"
+      value: "total_sales"
+    }
+  }
+
+  measure: metric {
+    label_from_parameter: metric_selector
+    type: number
+    sql:
+          CASE
+            WHEN {% parameter metric_selector %} = 'count'
+              THEN ${count}
+            WHEN {% parameter metric_selector %} = 'average_sale_price'
+              THEN ${average_sale_price}
+          WHEN {% parameter metric_selector %} = 'total_sales'
+              THEN ${total_sale_price}
+            ELSE NULL
+          END ;;
+    value_format_name: decimal_2
+  }
+
+  parameter: analyze_by {
+    type: unquoted
+    allowed_value: { value: "Country_Name" label: "Country Name"}
+    allowed_value: { value: "Category" label: "Category Name" }
+    allowed_value: { value: "Deparment" label: "Department"}
+    default_value: "CountryName"
+    hidden: no
+  }
+
+  dimension: analyze_by_selector {
+    label_from_parameter: analyze_by
+    hidden: no
+    sql:
+
+      {% if analyze_by._parameter_value == 'Country_Name' %}
+      ${users.country}
+      {% elsif analyze_by._parameter_value == 'Category' %}
+      ${products.category}
+      {% elsif analyze_by._parameter_value == 'Deparment' %}
+      ${products.department}
+      {% else %}
+      NULL
+      {% endif %} ;;
+
+  }
+
   dimension: id {
     primary_key: yes
     type: number
@@ -46,9 +106,19 @@ view: order_items {
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
+
+    html:
+    {% if value == 'Complete' %} ✅
+    {% elsif value == 'Shipped' %} 🚢
+    {% elsif value == 'Processing' %} ⏳
+    {% elsif value == 'Cancelled' %} ❌
+    {% elsif value == 'Returned' %} ↩️
+    {% endif %}
+    {{ value }}
+  ;;
   }
   dimension: user_id {
-    type: number
+    type: string
     sql: ${TABLE}.user_id ;;
   }
 

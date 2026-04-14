@@ -43,7 +43,7 @@ explore: order_items {
 
 explore: users {
 
-  fields: [ALL_FIELDS*,-order_items.gross_margin,-order_items.total_gross_margin]
+  fields: [ALL_FIELDS*,-order_items.gross_margin,-order_items.total_gross_margin, -order_items.analyze_by, -order_items.analyze_by_selector]
 
   join: order_items {
     view_label: "Order Items"
