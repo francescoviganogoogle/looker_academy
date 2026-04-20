@@ -21,6 +21,10 @@ Refer to the table below to find the LookML code associated with each stage of t
 | `002_getting_started` | **Week 2 / Session 5a** | Basic View creation (`orders`, `users`, `products`) and initial Explore definitions. |
 | `003_views_explore_joins` | **Week 2 / Session 5b** | Advanced LookML: Joins, complex measures (e.g., `total_gross_margin`), and dimension groups for date analysis. |
 | `004_looker_dashboards` | **Week 2 / Session 6** | Transformation of User-Defined Dashboards into **LookML Dashboards** (e.g., Business Pulse). |
+| `005_looker_dashboards` | **Week 3 / Session 7** | Filters and multi tabbed dashboards. |
+| `006_liquid_filter_only_fields` | **Week 3 / Session 8a** |  Liquid and Filter Only Fields. |
+| `007_interactive_dashboards` | **Week 3 / Session 8b** | Drill down, Links, and Actions. |
+| `008_conversational_analytics` | **Week 3 / Session 9** | Conversational Analytics. |
 
 ---
 
