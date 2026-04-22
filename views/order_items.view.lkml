@@ -208,5 +208,68 @@ view: order_items {
     sql: 1.0 * ${total_gross_margin}/ nullif(${total_sale_price},0) ;;
   }
 
+  filter: date_filter {
+    type: date
+  }
+
+  dimension: is_current_period {
+    type: yesno
+    sql: {% condition date_filter %} ${created_raw} {% endcondition%} ;;
+  }
+
+  dimension: selected_period_length {
+    type: number
+    sql: DATE_DIFF(DATE({% date_end date_filter%}),DATE({% date_start date_filter %}),DAY) ;;
+  }
+
+  dimension: parallel_period_start {
+    type: date
+    sql: DATE_SUB(DATE({% date_start date_filter %}),INTERVAL ${selected_period_length} DAY) ;;
+  }
+
+  dimension: parallel_period_end {
+    type: date
+    sql: DATE_SUB(DATE({% date_end date_filter %}),INTERVAL ${selected_period_length} DAY) ;;
+  }
+
+  dimension: is_parallel_period {
+    type: yesno
+    sql: ${created_date} >= ${parallel_period_start} and ${created_date} < ${parallel_period_end} ;;
+  }
+
+  measure: total_sales_price_current {
+    type:  sum
+    sql: ${sale_price} ;;
+    filters: {
+      field: is_current_period
+      value: "Yes"
+    }
+  }
+
+  measure: total_sales_price_parallel {
+    type:  sum
+    sql: ${sale_price} ;;
+    filters: {
+      field: is_parallel_period
+      value: "Yes"
+    }
+  }
+
+  dimension_group:created_comparison  {
+    type: time
+    timeframes: [raw, date, week, month, year]
+    sql: case when ${is_current_period} then ${created_raw}
+              when ${is_parallel_period} then TIMESTAMP_ADD(${created_raw},INTERVAL ${selected_period_length} DAY)
+              else ${created_raw} end;;
+
+  }
+
+  measure: total_sales_comparison {
+    type: number
+    sql:  SAFE_DIVIDE(${total_sales_price_current} , ${total_sales_price_parallel}) ;;
+    value_format_name: percent_2
+  }
+
+
 
 }

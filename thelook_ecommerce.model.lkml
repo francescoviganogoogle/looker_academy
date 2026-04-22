@@ -39,6 +39,8 @@ explore: order_items {
   }
 
 
+  sql_always_where: {% condition date_filter %} ${order_items.created_comparison_raw} {% endcondition %}  ;;
+
 }
 
 explore: users {
