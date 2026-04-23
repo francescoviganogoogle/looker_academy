@@ -3,7 +3,7 @@
   title: Business Pulse  Tabbed
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: wNHaaT4OJobl0e8ZFRupAx
+  preferred_slug: hhDGqrQdo5BCuqzLM3x4gK
   theme_name: ''
   layout: newspaper
   tabs:
@@ -112,7 +112,7 @@
       State: users.state
     row: 0
     col: 4
-    width: 8
+    width: 12
     height: 7
     tab_name: Looker Academy - Business Pulse  Tabbed
   - title: Canceled Orders by Age Bucket
@@ -236,14 +236,93 @@
       Category Demo: products.category
       Country: users.country
       State: users.state
-    row: 0
-    col: 12
+    row: 7
+    col: 8
     width: 8
     height: 7
     tab_name: Looker Academy - Business Pulse  Tabbed
+  - title: Moving Average
+    name: Moving Average
+    model: thelook_ecommerce
+    explore: order_items
+    type: looker_line
+    fields: [order_items.total_gross_margin, order_items.created_week]
+    sorts: [order_items.total_gross_margin desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - category: table_calculation
+      expression: count(offset_list(${order_items.total_gross_margin},0,5))
+      label: Count
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: count
+      _type_hint: number
+    - category: table_calculation
+      expression: mean(offset_list(${order_items.total_gross_margin},0,5))
+      label: moving average
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: moving_average
+      _type_hint: number
+    - category: table_calculation
+      expression: if(${count} >=5 ,${moving_average},null)
+      label: Moving Average (5 weeks)
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: moving_average_5_weeks
+      _type_hint: number
+    - category: table_calculation
+      expression: if(${count}>=5, ${order_items.total_gross_margin}, null)
+      label: Total Sales Margin
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: total_sales_margin
+      _type_hint: number
+      is_disabled: true
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: false
+    interpolation: linear
+    x_axis_zoom: true
+    y_axis_zoom: true
+    defaults_version: 1
+    hidden_fields: [count, moving_average]
+    hidden_pivots: {}
+    listen:
+      Order Item Creation Date: order_items.created_date
+    row: 7
+    col: 0
+    width: 8
+    height: 6
+    tab_name: Looker Academy - Business Pulse  Tabbed
   - title: Top 10 Categories
     name: Top 10 Categories
-    model: thelook_ecommerce
+    model: thelook
     explore: order_items
     type: looker_column
     fields: [products.category, order_items.total_gross_margin]
@@ -369,7 +448,7 @@
     ui_config:
       type: tag_list
       display: popover
-    model: thelook_ecommerce
+    model: thelook
     explore: order_items
     listens_to_filters: []
     field: products.category
