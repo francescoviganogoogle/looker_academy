@@ -1,6 +1,6 @@
 ---
 - dashboard: business_pulse__tabbed
-  title: Business Pulse  Tabbed
+  title: Business Pulse Tabbed
   preferred_viewer: dashboards-next
   description: ''
   preferred_slug: hhDGqrQdo5BCuqzLM3x4gK
