@@ -1,5 +1,5 @@
 ---
-- dashboard: tabbed_dashboard
+- dashboard: business_pulse__tabbed
   title: Business Pulse  Tabbed
   preferred_viewer: dashboards-next
   description: ''
@@ -47,13 +47,13 @@
     rows_font_size: 12
     defaults_version: 1
     listen:
-      State: users.state
       Order Item Creation Date: order_items.created_date
       Category Demo: products.category
       Country: users.country
+      State: users.state
     row: 0
     col: 0
-    width: 2
+    width: 4
     height: 3
     tab_name: Looker Academy - Business Pulse  Tabbed
   - title: Total Sales, Year over Year
@@ -109,15 +109,141 @@
     listen:
       Category Demo: products.category
       Country: users.country
+      State: users.state
     row: 0
-    col: 2
+    col: 4
     width: 8
-    height: 11
+    height: 7
     tab_name: Looker Academy - Business Pulse  Tabbed
-
+  - title: Canceled Orders by Age Bucket
+    name: Canceled Orders by Age Bucket
+    model: thelook_ecommerce
+    explore: order_items
+    type: looker_column
+    fields: [total_order_value_cancelled, age_buckets]
+    filters:
+      order_items.status: ''
+      order_items.created_date: 90 days
+    sorts: [total_order_value_cancelled desc 0]
+    limit: 500
+    column_limit: 50
+    total: true
+    dynamic_fields:
+    - category: measure
+      expression:
+      label: Total Order Value Cancelled
+      value_format:
+      value_format_name: usd
+      based_on: order_items.total_sale_price
+      _kind_hint: measure
+      measure: total_order_value_cancelled
+      type: sum
+      _type_hint: number
+      filters:
+        orders.status: Cancelled
+    - category: dimension
+      description: ''
+      label: Age Buckets
+      value_format:
+      value_format_name:
+      calculation_type: group_by
+      dimension: age_buckets
+      args:
+      - users.age
+      - - label: Teens
+          filter: "[0,18]"
+        - label: Target
+          filter: "(18,30]"
+      - Other
+      _kind_hint: dimension
+      _type_hint: string
+    - category: table_calculation
+      expression: "${total_order_value_cancelled} / ${total_order_value_cancelled:total}"
+      label: Canceled by Age Bucket vs Total
+      value_format:
+      value_format_name: percent_2
+      _kind_hint: measure
+      table_calculation: canceled_by_age_bucket_vs_total
+      _type_hint: number
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: total_order_value_cancelled,
+            id: total_order_value_cancelled, name: Total Order Value Cancelled}],
+        showLabels: true, showValues: true, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}, {label: !!null '', orientation: right,
+        series: [{axisId: canceled_by_age_bucket_vs_total, id: canceled_by_age_bucket_vs_total,
+            name: Canceled by Age Bucket vs Total}], showLabels: true, showValues: true,
+        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    series_types:
+      canceled_by_age_bucket_vs_total: line
+    series_tooltip_options:
+      total_order_value_cancelled:
+        custom_tooltips_enabled: true
+        template: |-
+          <div style="padding: 5px 0;">
+            <div>null</div>
+            <div style="font-weight: bold;">{{ age_buckets }}</div>
+          </div>
+          <div style="padding: 5px 0;">
+            <div>Total Order Value Cancelled</div>
+            <div style="font-weight: bold;">{{ total_order_value_cancelled }}</div>
+            <div>% Total Order Value Cancelled </div>
+             <div style="font-weight: bold;">{{ canceled_by_age_bucket_vs_total }}</div>
+          </div>
+        style:
+          font_size: 12
+          font_family: Roboto, 'Noto Sans', 'Noto Sans JP', 'Noto Sans CJK KR', 'Noto
+            Sans Arabic UI', 'Noto Sans Devanagari UI', 'Noto Sans Hebrew', 'Noto
+            Sans Thai UI', Helvetica, Arial, sans-serif
+          font_color: "#FFFFFF"
+          background_color: "#262D33"
+          border_radius: 4
+          border_color: transparent
+          box_shadow: none
+          align: left
+    defaults_version: 1
+    hidden_fields: [canceled_by_age_bucket_vs_total]
+    hidden_pivots: {}
+    listen:
+      Order Item Creation Date: order_items.created_date
+      Category Demo: products.category
+      Country: users.country
+      State: users.state
+    row: 0
+    col: 12
+    width: 8
+    height: 7
+    tab_name: Looker Academy - Business Pulse  Tabbed
   - title: Top 10 Categories
     name: Top 10 Categories
-    model: thelook
+    model: thelook_ecommerce
     explore: order_items
     type: looker_column
     fields: [products.category, order_items.total_gross_margin]
@@ -153,16 +279,14 @@
     totals_color: "#808080"
     defaults_version: 1
     listen:
-      Brand: products.brand
       Order Item Creation Date: order_items.created_date
-      Category Filter: products.category
+      Brand: products.brand
       Country: users.country
     row: 0
     col: 0
     width: 8
     height: 8
     tab_name: Brand Lookup
-
   - title: Totals Sales by Category and Department
     name: Totals Sales by Category and Department
     model: thelook_ecommerce
@@ -215,13 +339,12 @@
     defaults_version: 1
     listen:
       Order Item Creation Date: order_items.created_date
+      Brand: products.brand
     row: 0
-    col: 10
+    col: 8
     width: 8
-    height: 11
-    tab_name: 'Brand Lookup'
-
-
+    height: 8
+    tab_name: Brand Lookup
   filters:
   - name: Order Item Creation Date
     title: Order Item Creation Date
@@ -246,7 +369,7 @@
     ui_config:
       type: tag_list
       display: popover
-    model: thelook
+    model: thelook_ecommerce
     explore: order_items
     listens_to_filters: []
     field: products.category
