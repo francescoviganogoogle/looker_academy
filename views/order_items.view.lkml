@@ -213,26 +213,31 @@ view: order_items {
   }
 
   dimension: is_current_period {
+    hidden: yes
     type: yesno
     sql: {% condition date_filter %} ${created_raw} {% endcondition%} ;;
   }
 
   dimension: selected_period_length {
+    hidden: yes
     type: number
     sql: DATE_DIFF(DATE({% date_end date_filter%}),DATE({% date_start date_filter %}),DAY) ;;
   }
 
   dimension: parallel_period_start {
+    hidden: yes
     type: date
     sql: DATE_SUB(DATE({% date_start date_filter %}),INTERVAL ${selected_period_length} DAY) ;;
   }
 
   dimension: parallel_period_end {
+    hidden: yes
     type: date
     sql: DATE_SUB(DATE({% date_end date_filter %}),INTERVAL ${selected_period_length} DAY) ;;
   }
 
   dimension: is_parallel_period {
+    hidden: yes
     type: yesno
     sql: ${created_date} >= ${parallel_period_start} and ${created_date} < ${parallel_period_end} ;;
   }
@@ -244,6 +249,7 @@ view: order_items {
       field: is_current_period
       value: "Yes"
     }
+    hidden: yes
   }
 
   measure: total_sales_price_parallel {
@@ -253,6 +259,8 @@ view: order_items {
       field: is_parallel_period
       value: "Yes"
     }
+    hidden: yes
+
   }
 
   dimension_group:created_comparison  {
