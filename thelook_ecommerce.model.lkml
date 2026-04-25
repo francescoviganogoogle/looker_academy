@@ -5,6 +5,12 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 include: "/dashboards/*.dashboard.lookml"
 
 
+datagroup: new_date {
+  sql_trigger: SELECT current_date()  ;;
+  max_cache_age: "24 hours"
+}
+
+
 explore: order_items {
 
 
@@ -38,8 +44,24 @@ explore: order_items {
     sql_on: ${orders.order_id} = ${order_items.order_id} ;;
   }
 
+  join: order_facts {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${order_facts.order_id} = ${order_items.order_id} ;;
+  }
 
-  sql_always_where: {% condition date_filter %} ${order_items.created_comparison_raw} {% endcondition %}  ;;
+
+ # sql_always_where: {% condition date_filter %} ${order_items.created_comparison_raw} {% endcondition %}  ;;
+
+    aggregate_table: rollup__created_year__products_department {
+      query: {
+        dimensions: [created_year, products.department]
+        measures: [total_gross_margin, total_sale_price]
+      }
+      materialization: { datagroup_trigger: new_date}
+
+   }
+
 
 }
 
