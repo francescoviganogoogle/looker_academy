@@ -9,6 +9,7 @@ view: inventory_items {
     hidden: yes
   }
   dimension: cost {
+    label: "Inventory Cost"
     type: number
     sql: ${TABLE}.cost ;;
   }
@@ -59,5 +60,10 @@ view: inventory_items {
   measure: count {
     type: count
     drill_fields: [id, product_name, products.name, products.id]
+  }
+  measure: average_cost {
+    label: "Average Inventory Cost"
+    type: average
+    sql: ${cost} ;;
   }
 }

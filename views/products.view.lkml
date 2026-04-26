@@ -69,6 +69,7 @@ view: products {
   }
 
   dimension: cost {
+    label: "Standard Cost"
     type: number
     sql: ${TABLE}.cost ;;
   }
@@ -99,4 +100,12 @@ view: products {
     type: count
     #drill_fields: [id, name, distribution_centers.name, distribution_centers.id, inventory_items.count]
   }
+
+  measure: average_cost {
+    label: "Average Standard Cost"
+    type: average
+    sql: ${cost} ;;
+  }
+
+
 }
