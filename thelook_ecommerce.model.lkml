@@ -19,7 +19,7 @@ explore: order_items {
     type: left_outer
     relationship: one_to_one
     sql_on: ${inventory_items.id} = ${order_items.inventory_item_id} ;;
-    fields: [inventory_items.cost]
+    fields: [inventory_items.cost, inventory_items.average_cost]
   }
 
   join: users {

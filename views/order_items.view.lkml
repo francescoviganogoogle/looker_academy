@@ -161,6 +161,7 @@ view: order_items {
     group_label: "Business Measures"
     type: sum
     sql: ${sale_price} ;;
+    synonyms: ["TSP"]
   }
 
   measure: average_sale_price {
@@ -169,6 +170,7 @@ view: order_items {
     type: average
     value_format_name: decimal_1
     sql: ${sale_price} ;;
+    synonyms: ["ASP"]
   }
 
   measure: average_shipping_days {
