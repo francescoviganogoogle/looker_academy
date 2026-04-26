@@ -41,7 +41,7 @@ view: orders {
   }
   dimension: user_id {
     type: number
-    # hidden: yes
+    hidden: yes
     sql: ${TABLE}.user_id ;;
   }
   measure: count {

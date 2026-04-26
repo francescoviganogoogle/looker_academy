@@ -65,6 +65,7 @@ view: order_items {
   dimension: id {
     primary_key: yes
     type: number
+    hidden: yes
     sql: ${TABLE}.id ;;
   }
   dimension_group: created {
@@ -78,14 +79,17 @@ view: order_items {
     sql: ${TABLE}.delivered_at ;;
   }
   dimension: inventory_item_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.inventory_item_id ;;
   }
   dimension: order_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.order_id ;;
   }
   dimension: product_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.product_id ;;
   }
@@ -118,6 +122,7 @@ view: order_items {
   ;;
   }
   dimension: user_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.user_id ;;
   }

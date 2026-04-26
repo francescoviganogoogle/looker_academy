@@ -6,6 +6,7 @@ view: inventory_items {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    hidden: yes
   }
   dimension: cost {
     type: number
@@ -29,12 +30,13 @@ view: inventory_items {
     sql: ${TABLE}.product_department ;;
   }
   dimension: product_distribution_center_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.product_distribution_center_id ;;
   }
   dimension: product_id {
+    hidden: yes
     type: number
-    # hidden: yes
     sql: ${TABLE}.product_id ;;
   }
   dimension: product_name {
