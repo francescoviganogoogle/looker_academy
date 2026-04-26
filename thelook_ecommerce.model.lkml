@@ -12,7 +12,7 @@ datagroup: new_date {
 
 
 explore: order_items {
-
+ view_name: order_items
 
   join: inventory_items {
     view_label: "Inventory Items"
@@ -64,6 +64,16 @@ explore: order_items {
 
 
 }
+
+
+explore: order_items_extended {
+
+  extends: [order_items]
+  label: "Order Items Extended"
+
+  fields: [ALL_FIELDS*,-users*,-products.brand]
+
+  }
 
 explore: users {
 
