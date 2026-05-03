@@ -8,7 +8,9 @@ view: users {
     type: number
     sql: ${TABLE}.id ;;
   }
+
   dimension: age {
+    required_access_grants: [can_see_sensitive_data]
     type: number
     sql: ${TABLE}.age ;;
   }
@@ -23,6 +25,7 @@ view: users {
 
 
   dimension: city {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.city ;;
   }
@@ -37,45 +40,55 @@ view: users {
     sql: ${TABLE}.created_at ;;
   }
   dimension: email {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.email ;;
   }
   dimension: first_name {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.first_name ;;
   }
 
   dimension: name {
+    required_access_grants: [can_see_sensitive_data]
     label: "Name"
     description: "Full user name"
     sql: concat(${first_name}, ' ', ${last_name}) ;;
   }
 
   dimension: gender {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.gender ;;
   }
   dimension: last_name {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.last_name ;;
   }
   dimension: latitude {
+    required_access_grants: [can_see_sensitive_data]
     type: number
     sql: ${TABLE}.latitude ;;
   }
   dimension: longitude {
+    required_access_grants: [can_see_sensitive_data]
     type: number
     sql: ${TABLE}.longitude ;;
   }
   dimension: postal_code {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.postal_code ;;
   }
   dimension: state {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.state ;;
   }
   dimension: street_address {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.street_address ;;
   }
@@ -84,6 +97,7 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
   dimension: user_geom {
+    required_access_grants: [can_see_sensitive_data]
     type: string
     sql: ${TABLE}.user_geom ;;
   }

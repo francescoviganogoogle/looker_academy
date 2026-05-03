@@ -10,9 +10,17 @@ datagroup: new_date {
   max_cache_age: "24 hours"
 }
 
+access_grant: can_see_sensitive_data {
+  allowed_values: ["yes"]
+  user_attribute: can_see_sensitive_data
+}
+
 
 explore: order_items {
+
  view_name: order_items
+
+
 
   join: inventory_items {
     view_label: "Inventory Items"
@@ -53,27 +61,32 @@ explore: order_items {
 
  # sql_always_where: {% condition date_filter %} ${order_items.created_comparison_raw} {% endcondition %}  ;;
 
-    aggregate_table: rollup__created_year__products_department {
-      query: {
-        dimensions: [created_year, products.department]
-        measures: [total_gross_margin, total_sale_price]
-      }
-      materialization: { datagroup_trigger: new_date}
+  #   aggregate_table: rollup__created_year__products_department {
+  #     query: {
+  #       dimensions: [created_year, products.department]
+  #       measures: [total_gross_margin, total_sale_price]
+  #     }
+  #     materialization: { datagroup_trigger: new_date}
 
-   }
+  # }
+
+  access_filter: {
+    field: users.country
+    user_attribute: country
+  }
 
 
 }
 
 
-explore: order_items_extended {
+# explore: order_items_extended {
 
-  extends: [order_items]
-  label: "Order Items Extended"
+#   extends: [order_items]
+#   label: "Order Items Extended"
 
-  fields: [ALL_FIELDS*,-users*,-products.brand]
+#   fields: [ALL_FIELDS*,-users*,-products.brand,users.country]
 
-  }
+#   }
 
 explore: users {
 

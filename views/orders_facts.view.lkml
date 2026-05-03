@@ -31,7 +31,7 @@ view: order_facts {
     # orders.order_id   ,
     # orders.user_id   ,
     # orders.created_at) as order_facts {% endraw %} ;;
-    datagroup_trigger: new_date
+    #datagroup_trigger: new_date
   }
 
   dimension: order_id {
