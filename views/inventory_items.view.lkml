@@ -3,6 +3,7 @@ view: inventory_items {
   drill_fields: [id]
 
   dimension: id {
+    ## comment / uncomment the following line to explore the fanout problem
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;

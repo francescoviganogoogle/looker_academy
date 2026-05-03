@@ -25,6 +25,7 @@ explore: order_items {
   join: inventory_items {
     view_label: "Inventory Items"
     type: left_outer
+    # comment / uncomment the following row to explore the fanout problem
     relationship: one_to_one
     sql_on: ${inventory_items.id} = ${order_items.inventory_item_id} ;;
     fields: [inventory_items.cost, inventory_items.average_cost]
